@@ -26,6 +26,10 @@ define gluster::mount(
 	$version = '',		# pick a specific version (defaults to latest)
 	$ip = '',		# you can specify which ip address to use (if multiple)
 	$type = 'glusterfs',	# use 'glusterfs' or 'nfs'
+	$options = [
+		'defaults',
+		'_netdev',
+	],
 	$shorewall = false,
 ) {
 	include gluster::params
@@ -158,6 +162,8 @@ define gluster::mount(
 		default => 'glusterfs',
 	}
 
+	$valid_options = join(concat(flatten($options), [ 'defaults', '_netdev' ], "${rw_bool}"),",")
+
 	# Mount Options:
 	# * backupvolfile-server=server-name
 	# * fetch-attempts=N (where N is number of attempts)
@@ -175,7 +181,7 @@ define gluster::mount(
 		ensure => $mounted_bool,
 		device => "${server}",
 		fstype => "${valid_type}",
-		options => "defaults,_netdev,${rw_bool}",	# TODO: will $suid_bool work with gluster ?
+		options => "$valid_options",	# TODO: will $suid_bool work with gluster ?
 		dump => '0',		# fs_freq: 0 to skip file system dumps
 		pass => '0',		# fs_passno: 0 to skip fsck on boot
 		require => [
