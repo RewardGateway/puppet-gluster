@@ -508,7 +508,7 @@ define gluster::brick(
 				device => "UUID=${valid_fsuuid}",
 				fstype => "${valid_fstype}",
 				# noatime,nodiratime to save gluster from silly updates
-				options => "${mount_options},${ro_bool},noatime,nodiratime,noexec",	# TODO: is nodev? nosuid? noexec? a good idea?
+				options => "${mount_options},${ro_bool},noatime,nodiratime,noexec,nobootwait",	# TODO: is nodev? nosuid? noexec? a good idea?
 				dump => '0',	# fs_freq: 0 to skip file system dumps
 				# NOTE: technically this should be '2', to `fsck.xfs`
 				# after the rootfs ('1'), but fsck.xfs actually does
