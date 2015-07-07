@@ -162,7 +162,7 @@ define gluster::mount(
 		default => 'glusterfs',
 	}
 
-	$valid_options = join(concat(flatten($options), [ 'defaults', '_netdev' ], "${rw_bool}"),",")
+	$valid_options = sort(union(concat(flatten($options), [ 'defaults', '_netdev' ], "${rw_bool}"),","))
 
 	# Mount Options:
 	# * backupvolfile-server=server-name
