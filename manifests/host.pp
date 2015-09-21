@@ -66,6 +66,15 @@ define gluster::host(
 			require => File["${vardir}/"],
 		}
 
+		# don't purge the vrrp file generated within
+		file { "${vardir}/vrrp/":
+			ensure => directory,	# make sure this is a directory
+			recurse => true,		# recurse into directory
+			purge => true,		# purge unmanaged files
+			force => true,		# purge subdirs and links
+			require => File["${vardir}/"],
+		}
+
 		# if we manually *pick* a uuid, then store it too, so that it
 		# sticks if we ever go back to using automatic uuids. this is
 		# useful if a user wants to initially import uuids by picking
@@ -217,14 +226,6 @@ define gluster::host(
 		$vip = $::gluster::server::vip
 		if ! ($vip =~ /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/) {
 			fail('You must specify a valid VIP to use with VRRP.')
-		}
-
-		file { "${vardir}/vrrp/":
-			ensure => directory,	# make sure this is a directory
-			recurse => true,	# recurse into directory
-			purge => true,		# purge unmanaged files
-			force => true,		# purge subdirs and links
-			require => File["${vardir}/"],
 		}
 
 		# store so that a fact can figure out the interface and cidr...
