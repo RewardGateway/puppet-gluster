@@ -180,6 +180,7 @@ class gluster::server(
 		ensure => running,	# ensure it stays running
 		hasstatus => false,	# FIXME: BUG: https://bugzilla.redhat.com/show_bug.cgi?id=836007
 		hasrestart => true,	# use restart, not start; stop
+		pattern => '/usr/sbin/glusterd',
 	}
 }
 
